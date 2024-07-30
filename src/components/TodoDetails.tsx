@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { useState, useEffect } from 'react';
 import { RouteParams } from '../interfaces/interfaces';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -35,10 +36,11 @@ function TodoDetail() {
                 title,
                 completed,
             }).unwrap();
-            console.log(`Todo with id ${id} updated successfully.`);
+            toast.success("Updated Succesfully")
             navigate('/'); // Redirect to home or todos list page
         } catch (error) {
             console.error("Error Updating Todo", error);
+            toast.error("Error Occured");
         }
     }
 
@@ -48,56 +50,63 @@ function TodoDetail() {
         if (window.confirm('Are you sure you want to delete this todo?')) {
             try {
                 await deleteTodo(id).unwrap();
-                console.log(`Todo with id ${id} deleted successfully.`);
+                toast.success("Deleted Succesfully")
                 navigate('/'); // Redirect to home or todos list page
             } catch (error) {
                 console.error('Failed to delete the Todo: ', error);
+                toast.error("Error Occured");
             }
         }
     }
 
 
     // Display loading and error messages if necessary
-    if (isLoading) return <p>Loading Todo...</p>;
-    if (isError) return <p>Error fetching todo</p>;
+    if (isLoading) return <p className='text-gray-600 text-center'>Loading Todo...</p>;
+    if (isError) return <p className='text-red-600 text-center'>Error fetching todo</p>;
 
     return (
-        <div>
-            <h1>Todo Detail</h1>
+        <div className='min-h-screen flex items-center justify-center bg-sky-300'>
+            {/* <h1 className='text-2xl font-bold mb-6'>Todo Detail</h1> */}
             {todo && (
-                <div>
-                    <form onSubmit={handleUpdate}>
-                        
+                <div className='bg-white p-6 shadow-md rounded-lg w-full max-w-md'>
+                    <form onSubmit={handleUpdate} className='space-y-4'>
                         <div>
-                            <label htmlFor="title">Title:</label>
+                            <label htmlFor="title" className='block text-sm font-medium text-gray-700'>Title:</label>
                             <input
                                 type="text"
                                 id="title"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
+                                className='py-2 block w-full border border-gray-300 rounded-md shadow-sm focus:border-sky-500 focus:ring focus:ring-sky-500 focus:ring-opacity-50'
+                                required
                             />
                         </div>
 
-                        <div>
-                            <label htmlFor="completed">Completed:</label>
-                            <input
-                                type="checkbox"
-                                id="completed"
-                                checked={completed}
-                                onChange={(e) => setCompleted(e.target.checked)}
-                            />
+                        <div className="flex justify-between">
+                            <div>
+                                <label htmlFor="completed" className='block text-sm font-medium text-gray-700'>Completed:</label>
+                                <input
+                                    type="checkbox"
+                                    id="completed"
+                                    checked={completed}
+                                    onChange={(e) => setCompleted(e.target.checked)}
+                                    className='mt-1'
+                                />
+                            </div>
+
+                            <button
+                                type="submit"
+                                className='bg-sky-700 text-white rounded-lg px-4 py-2 hover:bg-sky-800 transition duration-300'>
+                                {isUpdating ? 'Updating...' : 'Update'}
+                            </button>
                         </div>
-
-                        <button type="submit" className='bg-sky-700 rounded-lg mx-3 px-3'>
-                            {isUpdating ? 'Updating...' : 'Update'}
-                        </button>
-
                     </form>
 
-                    <button onClick={() => handleDelete(todo.id)} className='bg-red-700 rounded-lg mx-3 px-3'>
+                    <button
+                        onClick={() => handleDelete(todo.id)}
+                        className='mt-4 bg-red-700 text-white rounded-lg px-4 py-2 hover:bg-red-800 transition duration-300'>
                         {isDeleting ? 'Deleting...' : 'Delete'}
                     </button>
-
                 </div>
             )}
         </div>

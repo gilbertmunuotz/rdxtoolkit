@@ -1,0 +1,19 @@
+{
+  "todos": [
+    {
+      "id": "18076d04-d75a-4f3c-9517-3be643a77615",
+      "title": "Learn HTML, CSS",
+      "completed": true
+    },
+    {
+      "id": "3ee5a6fd-4f7a-4416-8d34-29466d19e0ed",
+      "title": "Learn JavaScript",
+      "completed": false
+    },
+    {
+      "id": "43c21fab-4e1f-4835-8861-992137b6cad9",
+      "title": "Boom FullStack Developer💣😂",
+      "completed": true
+    }
+  ]
+}
